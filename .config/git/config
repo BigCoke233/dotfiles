@@ -1,0 +1,13 @@
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = Eltrac
+	email = hi@guhub.cn
+	signingkey = 611B795EE33EF306BCEE46B2EC669A871D4B7BD9
+[commit]
+	gpgsign = true
+[gpg]
+	program = /opt/homebrew/bin/gpg

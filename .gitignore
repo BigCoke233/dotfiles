@@ -1,0 +1,14 @@
+*.DS_Store
+.zcompdump*
+*log
+
+.config/clash
+.config/cups
+.config/maven/repositories
+.config/maven/wrapper
+.config/raycast/extensions
+.config/zed/conversations
+.config/zed/prompts
+.config/zed/themes
+.config/zsh/ohmyzsh
+.config/raycast
