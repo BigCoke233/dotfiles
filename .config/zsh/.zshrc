@@ -28,14 +28,23 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export LEMMINX_WORKSPACE_DIR="$XDG_CACHE_HOME/lemminx"
 alias mvn="mvn -gs $XDG_CONFIG_HOME/maven/settings.xml"
+export NODE_REPL_HISTORY="$XDG_STATE_HOME"/node_repl_history
+export WAKATIME_HOME="$XDG_CONFIG_HOME"/wakatime
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 # END
 
+# ===== PATH ====== #
+
 export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
 
 # ====== Apps ====== #
 
 # GPG
 export GPG_TTY=$(tty)
+
+# Pupeteer
+export PUPPETEER_EXECUTABLE_PATH="$HOME/.cache/puppeteer/chrome/mac_arm-142.0.7444.59/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
 
 # Oh My Zsh
 export ZSH="$XDG_CONFIG_HOME/zsh/ohmyzsh"
@@ -43,10 +52,17 @@ ZSH_THEME="robbyrussell"
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
+# Java
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+
 # ====== Custom Aliases ======= #
 
 # Python
 alias python='/usr/bin/python3'
+
+# no longer use npm
+
+alias npm='echo "🚫 npm is disabled. Use pnpm." && false'
 
 # cd into one dir and list its content
 peek() {

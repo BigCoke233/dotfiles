@@ -4,11 +4,15 @@
 
 .config/clash
 .config/cups
-.config/maven/repositories
-.config/maven/wrapper
+.config/maven
 .config/raycast/extensions
 .config/zed/conversations
 .config/zed/prompts
 .config/zed/themes
 .config/zsh/ohmyzsh
 .config/raycast
+.config/emacs/bin/
+.config/gh/
+.config/wakatime/
+.config/zed/settings_backup.json
+.config/zsh/.zsh_sessions/
