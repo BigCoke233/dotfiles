@@ -1,0 +1,5 @@
+title-hidden = true
+
+[font]
+normal = ["Maple Mono", "Noto Serif SC"]
+size = 15.0
