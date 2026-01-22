@@ -1,0 +1,184 @@
+# ====== Network ====== #
+
+# Proxy
+export http_proxy="http://127.0.0.1:7890"
+export https_proxy="http://127.0.0.1:7890"
+export all_proxy="socks5://127.0.0.1:7890"
+
+export no_proxy="localhost,127.0.0.1"
+
+# ===== PATH ====== #
+
+export PATH="$HOME/bin:$PATH"
+export PATH=$PATH:/Users/eltrac/Library/Python/3.9/bin
+export PATH=$PATH:$HOME/.local/share/go/bin
+
+# ====== Apps ====== #
+
+# Homebrew
+# hide env hints
+export HOMEBREW_NO_ENV_HINTS=1
+
+# GPG
+export GPG_TTY=$(tty)
+
+# Pupeteer
+export PUPPETEER_EXECUTABLE_PATH="$HOME/.cache/puppeteer/chrome/mac_arm-142.0.7444.59/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+
+# Oh My Zsh
+export ZSH="$XDG_CONFIG_HOME/zsh/ohmyzsh"
+ZSH_THEME="robbyrussell"
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
+
+# Java
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+[ -s "/Users/eltrac/.bun/_bun" ] && source "/Users/eltrac/.bun/_bun"
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/Users/eltrac/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# Default Editor
+export EDITOR=nvim
+
+# mise
+eval "$(~/.local/bin/mise activate zsh)"
+
+# you-get cookies
+alias you-get='you-get --cookies ~/.local/share/you-get/www.bilibili.com_cookies.txt'
+
+# ====== Temporary File Path == #
+
+export TMPDIR=$XDG_STATE_HOME/tmp
+
+# ====== Custom Aliases ======= #
+
+# Python
+alias python='/usr/bin/python3'
+
+# ban some tools and remind to use alternative
+
+alias npm='echo "🚫 npm is disabled. Use pnpm." && false'
+alias vim='nvim'
+alias vi='nvim'
+alias upic='echo "🚫 uPic is no longer used. Try upx." && false'
+
+# Quickly edit zsh config
+alias zshconf="nvim ~/.config/zsh/.zshrc && source ~/.config/zsh/.zshrc"
+alias zshenv="sudo nvim /etc/zshenv && source /etc/zshenv"
+
+# Forgejo, instance-specific Aliases
+alias fj='fj --host src.guhub.cn'
+
+# Other
+alias tinypng="tinifier" # WHO GAVE IT SUCH A HARD-TO-SPELL NAME???
+
+# cd into one dir and list its content
+peek() {
+  # if no argument passed → list subdirectories in current directory
+  if [ "$#" -eq 0 ]; then
+    echo "📂 Subdirectories of $(pwd):"
+    # list only directories, one per line
+    ls -d -- */ 2>/dev/null || echo "(no subdirectories)"
+    return
+  fi
+
+  # otherwise, loop through all given arguments
+  for dir in "$@"; do
+    if [ -d "$dir" ]; then
+      (
+        cd "$dir" || exit
+        echo "📁 $(pwd):"
+        facad
+        echo
+      )
+    else
+      echo "peek: '$dir' is not a directory"
+    fi
+  done
+}
+
+# mkdir and cd
+mkcd() {
+  if [ -z "$1" ]; then
+    echo "Usage: mkcd <directory>"
+    return 1
+  fi
+
+  mkdir -p "$1" && cd "$1" || return
+}
+
+# cd ../
+back() {
+  cd ../
+}
+
+# git visualization
+gitvis() {
+	git log --oneline --graph --all --decorate
+}
+
+# check what apps are not managed by homebrew
+
+brewoutcasts() {
+  local count=0
+  local total=0
+
+  for app in /Applications/*.app; do
+    [[ -d "$app" ]] || continue
+    ((total++))
+    name=$(basename "$app" .app)
+
+    # Normalize app name for Homebrew comparison
+    local name_normalized="${name:l}"
+    name_normalized="${name_normalized// /-}"
+    name_normalized="${name_normalized//./-}"
+
+    # Handle specific app name mappings
+    case "$name" in
+      "Hidden Bar") name_normalized="hiddenbar" ;;
+      "Helium") name_normalized="helium-browser" ;;
+      "Safari") continue ;;
+    esac
+
+    if ! brew list --formula | grep -iq "^${name_normalized}$" && \
+       ! brew list --cask | grep -iq "^${name_normalized}$"; then
+      echo "$name is NOT managed by Homebrew"
+      ((count++))
+    fi
+  done
+
+  echo ""
+  echo "Summary: $count out of $total applications are not managed by Homebrew"
+}
+
+# yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+# weather
+function weather() {
+  curl wttr.in/Shapingba
+}
+alias wtr=weather
+
+. "$HOME/.local/share/../bin/env"
+
